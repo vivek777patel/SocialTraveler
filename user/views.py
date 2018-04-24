@@ -20,8 +20,8 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(["POST"])
-@authentication_classes((TokenAuthentication,))
-@permission_classes((IsAuthenticated,))
+# @authentication_classes((TokenAuthentication,))
+# @permission_classes((IsAuthenticated,))
 def login_user(request):
     username = request.data.get("username")
     password = request.data.get("password")
@@ -31,8 +31,8 @@ def login_user(request):
     if not user :
         return Response({"error": "Login failed"}, status=HTTP_401_UNAUTHORIZED)
 
-    token, _ = Token.objects.get_or_create(user=user)
-    return Response({"token": token.key})
+    user_profile_serializer = UserProfileSerializer(user)
+    return Response(user_profile_serializer.data)
 
 
 class UserProfileDetail(APIView):
