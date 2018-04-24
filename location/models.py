@@ -1,8 +1,7 @@
 from django.db import models
 
 from user.models import User
-from user.models import User
-
+from static_info.models import StaticInfo
 # Create your models here.
 
 '''
@@ -28,6 +27,9 @@ class LocationInfo(models.Model):
     latitude = models.DecimalField(max_digits=19, decimal_places=10)
     longitude = models.DecimalField(max_digits=19, decimal_places=10)
     updated_time = models.DateTimeField(auto_now=True)
+
+    location_type = models.ForeignKey(StaticInfo, related_name='location_type_static_info', default=1,null=False, on_delete=models.CASCADE)
+
     # Map it to static info once it is merged
     # user_id = models.ForeignKey(User, related_name='user', null=False, on_delete=models.CASCADE)
     review = models.FloatField(null=True, blank=True)
@@ -47,6 +49,7 @@ class LocationDetails(models.Model):
 
     location_details_id = models.AutoField(primary_key=True)
     photo_link = models.CharField(max_length=200, null=True, blank=True)
+    media_type = models.ForeignKey(StaticInfo, related_name='media_type_static_info', null=False, default=1, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     location_det_info = models.ForeignKey(LocationInfo, related_name='location_det_info', null=False, on_delete=models.CASCADE)
@@ -55,7 +58,7 @@ class LocationDetails(models.Model):
 
     def __str__(self):
         """A string representation of the model."""
-        return '{0} : {1} : {2} : {3}'.format(self.location_det_info.location_id, self.location_det_info.location_name, self.description, self.photo_link)
+        return '{0} : {1} : {2}'.format(self.location_det_info.location_id, self.location_det_info.location_name, self.photo_link)
 
 
 class VisitedLocationInfo(models.Model):

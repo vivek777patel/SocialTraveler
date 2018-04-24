@@ -29,6 +29,8 @@ class LocationInfoSerializer(serializers.ModelSerializer):
             'is_active',
             'location_info',
             'location_det_info',
+            'review',
+            'location_type',
         )
         model = LocationInfo
 
@@ -49,13 +51,12 @@ class LocationDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
-            'description',
             'photo_link',
+            'media_type_static_info',
             'created_date',
             'updated_date',
             'location_det_info',
             'is_active',
-            'review',
         )
         model = LocationDetails
 

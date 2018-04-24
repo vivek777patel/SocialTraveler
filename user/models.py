@@ -9,6 +9,8 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
 
+from static_info.models import StaticInfo
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -59,7 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # username = models.CharField(max_length=200, null=False, unique=True, default="vivek777patel")
     date_of_birth = models.DateField(_("Date_of_Birth"), default=datetime.date.today)
-    gender = models.IntegerField(null=False, default=1)
     # password = models.CharField(max_length=200, blank=True, default="")
 
     mobile = models.CharField(max_length=200, blank=True, default="")
@@ -83,7 +84,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True,
                                     help_text=_('Designates whether this user should be treated as '
                                                 'active. Unselect this instead of deleting accounts.'))
-    user_type = models.IntegerField(default=1, blank=False, null=False)
+
+    user_type = models.ForeignKey(StaticInfo, related_name='user_type_static_info', null=False, default=1, on_delete=models.CASCADE)
+    gender = models.ForeignKey(StaticInfo, related_name='gender_static_info', null=False, default=1, on_delete=models.CASCADE)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

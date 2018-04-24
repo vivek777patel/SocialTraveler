@@ -34,6 +34,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'visited_location_user',
             'user1',
             'user2',
+            'user_type'
         )
         model = User
 
