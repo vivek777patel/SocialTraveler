@@ -118,15 +118,34 @@ class UserStatus(models.Model):
     class Meta:
         app_label = 'user'
         db_table = "user_status"
+        ordering = ["-updated_time"]
 
     user_status_id = models.AutoField(primary_key=True)
     status = models.CharField(max_length=200, null=False)
     updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
-    user_id = models.ForeignKey(User, related_name='user', null=False, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, related_name='user_status', null=False, on_delete=models.CASCADE)
     is_active = models.IntegerField(default=1, null=False)
 
     def __str__(self):
         """A string representation of the model."""
-        return '{0} ({1})'.format(self.user_status_id, self.user_id.email)
+        return '{0} : {1} | {2}'.format(self.user_status_id, self.user_id.email, self.updated_time)
+
+
+class UserFriends(models.Model):
+
+    class Meta:
+        app_label = 'user'
+        db_table = "user_friends"
+
+    user_friends_id = models.AutoField(primary_key=True)
+    user_id1 = models.ForeignKey(User, related_name='user1', null=False, on_delete=models.CASCADE)
+    user_id2 = models.ForeignKey(User, related_name='user2', null=False, on_delete=models.CASCADE)
+    are_friends_with = models.BooleanField(default=False)
+    updated_time = models.DateTimeField(auto_now=True, auto_now_add=False)
+    is_active = models.IntegerField(default=1, null=False)
+
+    def __str__(self):
+        """A string representation of the model."""
+        return '{0} : {1} | {2} : {3}'.format(self.user_id1.id, self.user_id1.email, self.user_id2.id, self.user_id2.email, self.are_friends_with)
 
 
