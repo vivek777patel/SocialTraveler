@@ -5,26 +5,24 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 
-from .serializers import LocationInfoSerializer
+from .serializers import LocationInfoSerializer, VisitedLocationSerializer, LocationDetailsSerializer
 from .models import LocationInfo
 
 
+class GetLocationInfoDetail(APIView):
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
-# @api_view(["POST"])
-# @authentication_classes((TokenAuthentication,))
-# @permission_classes((IsAuthenticated,))
-# def login_user(request):
-#     username = request.data.get("username")
-#     password = request.data.get("password")
-#
-#     user = authenticate(email=username, password=password)
-#
-#     if not user :
-#         return Response({"error": "Login failed"}, status=HTTP_401_UNAUTHORIZED)
-#
-#     token, _ = Token.objects.get_or_create(user=user)
-#     return Response({"token": token.key})
+    def get_object(self, location_name):
+        try:
+            return LocationInfo.objects.get(location_name=location_name, is_active=1)
+        except LocationInfo.DoesNotExist:
+            raise Http404
 
+    def get(self, request, location_name):
+        location_info = self.get_object(location_name)
+        location_info_serializer = LocationInfoSerializer(location_info)
+        return Response(location_info_serializer.data)
 
 
 # For /location/addLocationInfo/ --> Kind of URL
@@ -32,12 +30,43 @@ from .models import LocationInfo
 
 
 class AddLocationInfo(APIView):
-
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         serializer = LocationInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# For /location/addVisitedLocationInfo/ --> Kind of URL
+# Post Request
+
+
+class AddVisitedLocationInfo(APIView):
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = VisitedLocationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# For /location/addLocationDetail/ --> Kind of URL
+# Post Request
+
+
+class AddLocationDetails(APIView):
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = LocationDetailsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -51,9 +80,8 @@ class AddLocationInfo(APIView):
 
 
 class LocationInfoDetail(APIView):
-
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         location_info = LocationInfo.objects.filter(is_active=1)
