@@ -23,15 +23,15 @@ class LocationInfo(models.Model):
     state = models.CharField(max_length=200, null=False)
     country = models.CharField(max_length=200, null=False)
     zip_code = models.CharField(max_length=200, null=False)
-    latitude = models.DecimalField(max_digits=19, decimal_places=10);
-    longitude = models.DecimalField(max_digits=19, decimal_places=10);
-    updated_time = models.DateTimeField(auto_now=True, auto_now_add=False, default=datetime.date.today)
+    latitude = models.DecimalField(max_digits=19, decimal_places=10)
+    longitude = models.DecimalField(max_digits=19, decimal_places=10)
+    updated_time = models.DateTimeField(auto_now=True)
     # Map it to static info once it is merged
     # user_id = models.ForeignKey(User, related_name='user', null=False, on_delete=models.CASCADE)
     is_active = models.IntegerField(default=1, null=False)
 
     def __str__(self):
         """A string representation of the model."""
-        return '{0} ({1})'.format(self.user_status_id, self.user_id.email)
+        return self.location_name
 
 
