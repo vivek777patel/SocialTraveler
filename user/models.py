@@ -1,14 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, UserManager
-from django.contrib.auth.models import PermissionsMixin
+import datetime
+
 from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-from rest_framework.authtoken.models import Token
-
-import datetime
 from django.utils.translation import ugettext_lazy as _
+from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
