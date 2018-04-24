@@ -10,7 +10,7 @@ class StaticInfoSerializer(serializers.ModelSerializer):
         model = StaticInfo
         fields = (
             'static_info_id',
-            'valueg',
+            'value',
             'combo_type',
             'is_active',
         )
