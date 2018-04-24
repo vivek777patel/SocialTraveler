@@ -4,8 +4,6 @@ from .models import StaticInfo
 
 class StaticInfoSerializer(serializers.ModelSerializer):
 
-    #static_info = serializers.StringRelatedField(many=True)
-
     class Meta:
         model = StaticInfo
         fields = (
