@@ -28,6 +28,8 @@ class LocationInfo(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
     # Map it to static info once it is merged
     # user_id = models.ForeignKey(User, related_name='user', null=False, on_delete=models.CASCADE)
+    review = models.FloatField(null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
     is_active = models.IntegerField(default=1, null=False)
 
     def __str__(self):
@@ -42,12 +44,11 @@ class LocationDetails(models.Model):
         db_table = "location_details"
 
     location_details_id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=200, null=False)
     photo_link = models.CharField(max_length=200, null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     location_det_info = models.ForeignKey(LocationInfo, related_name='location_det_info', null=False, on_delete=models.CASCADE)
-    review = models.FloatField(null=True, blank=True)
+
     is_active = models.IntegerField(default=1, null=False)
 
     def __str__(self):
